@@ -1,19 +1,13 @@
-
 import mongoose from "mongoose";
 
-const connectDB = async (): Promise<void> => {
-  const MONGO_URI = process.env.MONGO_URI;
-
-  if (!MONGO_URI) {
-    throw new Error("La variable MONGO_URI est absente du fichier .env");
-  }
-
+const connectDB = async (): Promise => {
   try {
-    await mongoose.connect(MONGO_URI);
-    console.log("✅ MongoDB connecté !");
+    // Connexion à MongoDB en spécifiant le port et le nom de la base de données
+    const conn = await mongoose.connect("mongodb://127.0.0.1:27017/projet_agile");
+    console.log(`Base de données MongoDB connectée : ${conn.connection.name}`);
   } catch (error) {
-    console.error("❌ Erreur de connexion à MongoDB :", error);
-    throw error;
+    console.error("Erreur de connexion à MongoDB :", error);
+    process.exit(1); // Arrête le processus en cas d'échec
   }
 };
 
